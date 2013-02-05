@@ -1,6 +1,5 @@
 package edu.asu.snac.client;
 
-import edu.asu.snac.shared.FieldVerifier;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -13,12 +12,16 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.PasswordTextBox;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
+import com.google.gwt.user.client.ui.VerticalPanel;
+
+import edu.asu.snac.client.auth.AuthRequest;
+import edu.asu.snac.client.auth.AuthResponse;
+import edu.asu.snac.client.auth.AuthService;
+import edu.asu.snac.client.auth.AuthServiceAsync;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -33,10 +36,12 @@ public class VLAB implements EntryPoint {
 			+ "connection and try again.";
 
 	/**
-	 * Create a remote service proxy to talk to the server-side Greeting service.
+	 * Create a remote service proxy to talk to the server-side Greeting
+	 * service.
 	 */
 	private final GreetingServiceAsync greetingService = GWT
 			.create(GreetingService.class);
+	private final AuthServiceAsync authService = GWT.create(AuthService.class);
 
 	/**
 	 * This is the entry point method.
@@ -62,16 +67,16 @@ public class VLAB implements EntryPoint {
 
 		// Focus the cursor on the name field when the app loads
 		usernameField.setFocus(true);
-		
-		PasswordTextBox passwordTextBox = new PasswordTextBox();
+
+		final PasswordTextBox passwordTextBox = new PasswordTextBox();
 		rootPanel.add(passwordTextBox, 120, 166);
-		
+
 		Label lblEmail = new Label("Email");
 		rootPanel.add(lblEmail, 59, 140);
-		
+
 		Label lblPassword = new Label("Password");
 		rootPanel.add(lblPassword, 60, 172);
-		
+
 		HTML htmlNewHtml = new HTML("<h1>Welcome to VLAB</h1>", true);
 		rootPanel.add(htmlNewHtml, 59, 0);
 		htmlNewHtml.setSize("279px", "109px");
@@ -111,7 +116,7 @@ public class VLAB implements EntryPoint {
 			 * Fired when the user clicks on the sendButton.
 			 */
 			public void onClick(ClickEvent event) {
-				sendNameToServer();
+				login();
 			}
 
 			/**
@@ -119,30 +124,35 @@ public class VLAB implements EntryPoint {
 			 */
 			public void onKeyUp(KeyUpEvent event) {
 				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					sendNameToServer();
+					login();
 				}
 			}
 
 			/**
-			 * Send the name from the nameField to the server and wait for a response.
+			 * Send the name from the nameField to the server and wait for a
+			 * response.
 			 */
-			private void sendNameToServer() {
+			private void login() {
 				// First, we validate the input.
 				errorLabel.setText("");
-				String textToServer = usernameField.getText();
-				if (!FieldVerifier.isValidName(textToServer)) {
-					errorLabel.setText("Please enter at least four characters");
-					return;
-				}
+				String login = usernameField.getText();
+				String pw = passwordTextBox.getText();
+
+				// if (!FieldVerifier.isValidName(login)) {
+				// errorLabel.setText("Please enter at least four characters");
+				// return;
+				// }
 
 				// Then, we send the input to the server.
 				sendButton.setEnabled(false);
-				textToServerLabel.setText(textToServer);
-				serverResponseLabel.setText("");
-				greetingService.greetServer(textToServer,
-						new AsyncCallback<String>() {
+				AuthRequest authRequest = new AuthRequest();
+				authRequest.setLogin(login);
+				authRequest.setPW(pw);
+				authService.doAuth(authRequest,
+						new AsyncCallback<AuthResponse>() {
+
+							@Override
 							public void onFailure(Throwable caught) {
-								// Show the RPC error message to the user
 								dialogBox
 										.setText("Remote Procedure Call - Failure");
 								serverResponseLabel
@@ -152,14 +162,20 @@ public class VLAB implements EntryPoint {
 								closeButton.setFocus(true);
 							}
 
-							public void onSuccess(String result) {
-								dialogBox.setText("Remote Procedure Call");
+							@Override
+							public void onSuccess(AuthResponse result) {
+								String uid = result.getInfo();
+								dialogBox.setText("You are logged in sucker:"
+										+ uid);
 								serverResponseLabel
-										.removeStyleName("serverResponseLabelError");
-								serverResponseLabel.setHTML(result);
+										.addStyleName("serverResponseLabelError");
+								serverResponseLabel
+										.setHTML("You are logged in sucker:"
+												+ uid);
 								dialogBox.center();
 								closeButton.setFocus(true);
 							}
+
 						});
 			}
 		}

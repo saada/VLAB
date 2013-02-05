@@ -1,0 +1,2 @@
+serviceClass: edu.asu.snac.client.auth.AuthService
+path: 4ED0DFFA927F4C152EB053DACDEAA462.gwt.rpc

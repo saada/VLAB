@@ -1,14 +1,17 @@
 package edu.asu.snac.client.auth;
 
-public class AuthResponse {
+import java.io.Serializable;
+
+public class AuthResponse implements Serializable {
 	public final static int RESULT_FAILED = 0;
 	public final static int RESULT_SUCCEEDED = 1;
 
 	private String info;
 	private int result;
 
-	public AuthResponse(int result) {
+	public AuthResponse setResult(int result) {
 		this.result = result;
+		return this;
 	}
 
 	public AuthResponse setInfo(String info) {
@@ -25,10 +28,10 @@ public class AuthResponse {
 	}
 
 	public static AuthResponse ofFailed() {
-		return new AuthResponse(RESULT_FAILED);
+		return new AuthResponse().setResult(RESULT_FAILED);
 	}
 
 	public static AuthResponse ofSucceeded() {
-		return new AuthResponse(RESULT_SUCCEEDED);
+		return new AuthResponse().setResult(RESULT_FAILED);
 	}
 }

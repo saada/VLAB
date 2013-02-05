@@ -34,7 +34,7 @@ public class AuthServiceImpl extends RemoteServiceServlet implements
 		if (userInfo == null) {
 			return AuthResponse.ofFailed().setInfo("wrong");
 		} else {
-			return AuthResponse.ofSucceeded();
+			return AuthResponse.ofSucceeded().setInfo(userInfo.getUid());
 		}
 	}
 

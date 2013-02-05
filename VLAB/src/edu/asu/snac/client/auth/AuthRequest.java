@@ -1,8 +1,18 @@
 package edu.asu.snac.client.auth;
 
-public class AuthRequest {
+import java.io.Serializable;
+
+public class AuthRequest implements Serializable {
 	private String login;
 	private String pw;
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public void setPW(String pw) {
+		this.pw = pw;
+	}
 
 	public String getLogin() {
 		return login;

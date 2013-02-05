@@ -11,4 +11,8 @@ public class UserInfo {
 		// TODO read data from db...
 		this.display = "Admin";
 	}
+
+	public String getUid() {
+		return uid;
+	}
 }
