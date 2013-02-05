@@ -1,0 +1,2 @@
+serviceClass: edu.asu.snac.client.GreetingService
+path: D5398893FACA52B89D7F7F10B6270E79.gwt.rpc

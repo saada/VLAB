@@ -16,6 +16,9 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.PasswordTextBox;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -40,8 +43,9 @@ public class VLAB implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		final Button sendButton = new Button("Send");
-		final TextBox nameField = new TextBox();
-		nameField.setText("GWT User");
+		sendButton.setText("login");
+		final TextBox usernameField = new TextBox();
+		usernameField.setAlignment(TextAlignment.LEFT);
 		final Label errorLabel = new Label();
 
 		// We can add style names to widgets
@@ -49,13 +53,29 @@ public class VLAB implements EntryPoint {
 
 		// Add the nameField and sendButton to the RootPanel
 		// Use RootPanel.get() to get the entire body element
-		RootPanel.get("nameFieldContainer").add(nameField);
-		RootPanel.get("sendButtonContainer").add(sendButton);
+		RootPanel rootPanel = RootPanel.get("nameFieldContainer");
+		rootPanel.add(usernameField, 120, 134);
+		usernameField.setSize("146px", "14px");
+		RootPanel.get("sendButtonContainer").add(sendButton, 120, 212);
+		sendButton.setSize("156px", "40px");
 		RootPanel.get("errorLabelContainer").add(errorLabel);
 
 		// Focus the cursor on the name field when the app loads
-		nameField.setFocus(true);
-		nameField.selectAll();
+		usernameField.setFocus(true);
+		
+		PasswordTextBox passwordTextBox = new PasswordTextBox();
+		rootPanel.add(passwordTextBox, 120, 166);
+		
+		Label lblEmail = new Label("Email");
+		rootPanel.add(lblEmail, 59, 140);
+		
+		Label lblPassword = new Label("Password");
+		rootPanel.add(lblPassword, 60, 172);
+		
+		HTML htmlNewHtml = new HTML("<h1>Welcome to VLAB</h1>", true);
+		rootPanel.add(htmlNewHtml, 59, 0);
+		htmlNewHtml.setSize("279px", "109px");
+		usernameField.selectAll();
 
 		// Create the popup dialog box
 		final DialogBox dialogBox = new DialogBox();
@@ -109,7 +129,7 @@ public class VLAB implements EntryPoint {
 			private void sendNameToServer() {
 				// First, we validate the input.
 				errorLabel.setText("");
-				String textToServer = nameField.getText();
+				String textToServer = usernameField.getText();
 				if (!FieldVerifier.isValidName(textToServer)) {
 					errorLabel.setText("Please enter at least four characters");
 					return;
@@ -147,6 +167,6 @@ public class VLAB implements EntryPoint {
 		// Add a handler to send the name to the server
 		MyHandler handler = new MyHandler();
 		sendButton.addClickHandler(handler);
-		nameField.addKeyUpHandler(handler);
+		usernameField.addKeyUpHandler(handler);
 	}
 }
