@@ -1,0 +1,1 @@
+Just a text file to allow git to add the 'test' folder.
