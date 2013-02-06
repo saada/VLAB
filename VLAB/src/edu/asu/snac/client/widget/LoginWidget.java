@@ -112,29 +112,12 @@ public class LoginWidget extends VlabWidget {
 			}
 		});
 
-		// Create a handler for the sendButton and nameField
-		class MyHandler implements ClickHandler, KeyUpHandler {
-			/**
-			 * Fired when the user clicks on the sendButton.
-			 */
-			public void onClick(ClickEvent event) {
-				login();
-			}
-
-			/**
-			 * Fired when the user types in the nameField.
-			 */
-			public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					login();
-				}
-			}
-
-			
-		}
+		
 		
 		// Add a handler to send the name to the server
-		MyHandler handler = new MyHandler();
+		ClickAndKeyHandler handler = new ClickAndKeyHandler();
+		usernameField.addKeyUpHandler(handler);
+		passwordTextBox.addKeyUpHandler(handler);
 		loginButton.addClickHandler(handler);
 	    
 	    
@@ -184,6 +167,27 @@ public class LoginWidget extends VlabWidget {
 					}
 
 				});
+	}
+	
+	// Create a handler for the sendButton and nameField
+	class ClickAndKeyHandler implements ClickHandler, KeyUpHandler {
+		/**
+		 * Fired when the user clicks on the sendButton.
+		 */
+		public void onClick(ClickEvent event) {
+			login();
+		}
+
+		/**
+		 * Fired when the user types in the nameField.
+		 */
+		public void onKeyUp(KeyUpEvent event) {
+			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+				login();
+			}
+		}
+
+		
 	}
 	
 }
