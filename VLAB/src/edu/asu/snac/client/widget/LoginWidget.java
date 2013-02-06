@@ -29,9 +29,6 @@ import edu.asu.snac.client.auth.AuthServiceAsync;
 
 public class LoginWidget extends VlabWidget {
 	
-	private TextBox textBox = new TextBox();
-    private CheckBox checkBox = new CheckBox();
-	
     /**
 	 * The message displayed to the user when the server cannot be reached or
 	 * returns an error.
@@ -45,43 +42,42 @@ public class LoginWidget extends VlabWidget {
 	public LoginWidget() {
 		AbsolutePanel panel = new AbsolutePanel();
 		panel.getElement().getStyle().setOverflow(Overflow.VISIBLE);
-		final Button sendButton = new Button("Send");
-		sendButton.setText("login");
-		final TextBox usernameField = new TextBox();
-		usernameField.setAlignment(TextAlignment.LEFT);
-		final Label errorLabel = new Label();
+		final Button loginButton = new Button("login");
 
 		// We can add style names to widgets
-		sendButton.addStyleName("sendButton");
-	    
-	    panel.add(usernameField, 120, 134);
-		usernameField.setSize("146px", "14px");
-		panel.add(sendButton, 120, 212);
-		sendButton.setSize("156px", "40px");
-		panel.add(errorLabel);
-
-		// Focus the cursor on the name field when the app loads
-		usernameField.setFocus(true);
-
-		final PasswordTextBox passwordTextBox = new PasswordTextBox();
-		panel.add(passwordTextBox, 120, 166);
-
+		loginButton.addStyleName("sendButton");
+	    		
 		Label lblEmail = new Label("Email");
-		panel.add(lblEmail, 59, 140);
+		panel.add(lblEmail, 73, 134);
+		final TextBox usernameField = new TextBox();
+		usernameField.setAlignment(TextAlignment.LEFT);
+		
+		panel.add(usernameField, 120, 132);
+		usernameField.setSize("142px", "14px");
+		
+		// Focus the cursor on the name field when the app loads
+		usernameField.getElement().focus();
+		usernameField.selectAll();
 
 		Label lblPassword = new Label("Password");
-		panel.add(lblPassword, 60, 172);
+		panel.add(lblPassword, 54, 168);
+
+		final PasswordTextBox passwordTextBox = new PasswordTextBox();
+		panel.add(passwordTextBox, 120, 164);
+		passwordTextBox.setSize("142px", "16px");
+		panel.add(loginButton, 120, 212);
+		loginButton.setSize("156px", "40px");
 
 		HTML htmlNewHtml = new HTML("<h1>Welcome to VLAB</h1>", true);
-		panel.add(htmlNewHtml, 59, 0);
-		htmlNewHtml.setSize("279px", "109px");
-		usernameField.selectAll();
+		panel.add(htmlNewHtml, 59, 51);
+		htmlNewHtml.setSize("279px", "83px");
 
 		// Create the popup dialog box
 		final DialogBox dialogBox = new DialogBox();
 		dialogBox.setText("Remote Procedure Call");
 		dialogBox.setAnimationEnabled(true);
 		final Button closeButton = new Button("Close");
+		
 		// We can set the id of a widget by accessing its Element
 		closeButton.getElement().setId("closeButton");
 		final Label textToServerLabel = new Label();
@@ -100,8 +96,8 @@ public class LoginWidget extends VlabWidget {
 		closeButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				dialogBox.hide();
-				sendButton.setEnabled(true);
-				sendButton.setFocus(true);
+				loginButton.setEnabled(true);
+				loginButton.setFocus(true);
 			}
 		});
 
@@ -129,17 +125,11 @@ public class LoginWidget extends VlabWidget {
 			 */
 			private void login() {
 				// First, we validate the input.
-				errorLabel.setText("");
 				String login = usernameField.getText();
 				String pw = passwordTextBox.getText();
 
-				// if (!FieldVerifier.isValidName(login)) {
-				// errorLabel.setText("Please enter at least four characters");
-				// return;
-				// }
-
 				// Then, we send the input to the server.
-				sendButton.setEnabled(false);
+				loginButton.setEnabled(false);
 				AuthRequest authRequest = new AuthRequest();
 				authRequest.setLogin(login);
 				authRequest.setPW(pw);
@@ -177,8 +167,7 @@ public class LoginWidget extends VlabWidget {
 
 		// Add a handler to send the name to the server
 		MyHandler handler = new MyHandler();
-		sendButton.addClickHandler(handler);
-		usernameField.addKeyUpHandler(handler);
+		loginButton.addClickHandler(handler);
 	    
 	    
 		super.buildPanel(panel);
