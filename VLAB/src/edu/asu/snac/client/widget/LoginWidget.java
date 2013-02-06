@@ -38,18 +38,30 @@ public class LoginWidget extends VlabWidget {
 			+ "connection and try again.";
 
 	private final AuthServiceAsync authService = GWT.create(AuthService.class);
+
+	private TextBox usernameField;
+
+	private PasswordTextBox passwordTextBox;
+
+	private Button loginButton;
+
+	private DialogBox dialogBox;
+
+	private HTML serverResponseLabel;
+
+	private Button closeButton;
     
 	public LoginWidget() {
 		AbsolutePanel panel = new AbsolutePanel();
 		panel.getElement().getStyle().setOverflow(Overflow.VISIBLE);
-		final Button loginButton = new Button("login");
+		loginButton = new Button("login");
 
 		// We can add style names to widgets
 		loginButton.addStyleName("sendButton");
 	    		
 		Label lblEmail = new Label("Email");
 		panel.add(lblEmail, 73, 134);
-		final TextBox usernameField = new TextBox();
+		usernameField = new TextBox();
 		usernameField.setAlignment(TextAlignment.LEFT);
 		
 		panel.add(usernameField, 120, 132);
@@ -62,7 +74,7 @@ public class LoginWidget extends VlabWidget {
 		Label lblPassword = new Label("Password");
 		panel.add(lblPassword, 54, 168);
 
-		final PasswordTextBox passwordTextBox = new PasswordTextBox();
+		passwordTextBox = new PasswordTextBox();
 		panel.add(passwordTextBox, 120, 164);
 		passwordTextBox.setSize("142px", "16px");
 		panel.add(loginButton, 120, 212);
@@ -72,16 +84,15 @@ public class LoginWidget extends VlabWidget {
 		panel.add(htmlNewHtml, 59, 51);
 		htmlNewHtml.setSize("279px", "83px");
 
-		// Create the popup dialog box
-		final DialogBox dialogBox = new DialogBox();
+		dialogBox = new DialogBox();
 		dialogBox.setText("Remote Procedure Call");
 		dialogBox.setAnimationEnabled(true);
-		final Button closeButton = new Button("Close");
+		closeButton = new Button("Close");
 		
 		// We can set the id of a widget by accessing its Element
 		closeButton.getElement().setId("closeButton");
 		final Label textToServerLabel = new Label();
-		final HTML serverResponseLabel = new HTML();
+		serverResponseLabel = new HTML();
 		VerticalPanel dialogVPanel = new VerticalPanel();
 		dialogVPanel.addStyleName("dialogVPanel");
 		dialogVPanel.add(new HTML("<b>Sending name to the server:</b>"));
@@ -119,58 +130,60 @@ public class LoginWidget extends VlabWidget {
 				}
 			}
 
-			/**
-			 * Send the name from the nameField to the server and wait for a
-			 * response.
-			 */
-			private void login() {
-				// First, we validate the input.
-				String login = usernameField.getText();
-				String pw = passwordTextBox.getText();
-
-				// Then, we send the input to the server.
-				loginButton.setEnabled(false);
-				AuthRequest authRequest = new AuthRequest();
-				authRequest.setLogin(login);
-				authRequest.setPW(pw);
-				authService.doAuth(authRequest,
-						new AsyncCallback<AuthResponse>() {
-
-							@Override
-							public void onFailure(Throwable caught) {
-								dialogBox
-										.setText("Remote Procedure Call - Failure");
-								serverResponseLabel
-										.addStyleName("serverResponseLabelError");
-								serverResponseLabel.setHTML(SERVER_ERROR);
-								dialogBox.center();
-								closeButton.setFocus(true);
-							}
-
-							@Override
-							public void onSuccess(AuthResponse result) {
-								String uid = result.getInfo();
-								dialogBox.setText("You are logged in sucker:"
-										+ uid);
-								serverResponseLabel
-										.addStyleName("serverResponseLabelError");
-								serverResponseLabel
-										.setHTML("You are logged in sucker:"
-												+ uid);
-								dialogBox.center();
-								closeButton.setFocus(true);
-							}
-
-						});
-			}
+			
 		}
-
+		
 		// Add a handler to send the name to the server
 		MyHandler handler = new MyHandler();
 		loginButton.addClickHandler(handler);
 	    
 	    
 		super.buildPanel(panel);
+	}
+	
+	/**
+	 * Send the name from the nameField to the server and wait for a
+	 * response.
+	 */
+	private void login() {
+		// First, we validate the input.
+		String login = usernameField.getText();
+		String pw = passwordTextBox.getText();
+
+		// Then, we send the input to the server.
+		loginButton.setEnabled(false);
+		AuthRequest authRequest = new AuthRequest();
+		authRequest.setLogin(login);
+		authRequest.setPW(pw);
+		authService.doAuth(authRequest,
+				new AsyncCallback<AuthResponse>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						dialogBox
+								.setText("Remote Procedure Call - Failure");
+						serverResponseLabel
+								.addStyleName("serverResponseLabelError");
+						serverResponseLabel.setHTML(SERVER_ERROR);
+						dialogBox.center();
+						closeButton.setFocus(true);
+					}
+
+					@Override
+					public void onSuccess(AuthResponse result) {
+						String uid = result.getInfo();
+						dialogBox.setText("You are logged in sucker:"
+								+ uid);
+						serverResponseLabel
+								.addStyleName("serverResponseLabelError");
+						serverResponseLabel
+								.setHTML("You are logged in sucker:"
+										+ uid);
+						dialogBox.center();
+						closeButton.setFocus(true);
+					}
+
+				});
 	}
 	
 }
