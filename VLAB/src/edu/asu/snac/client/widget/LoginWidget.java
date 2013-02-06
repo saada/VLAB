@@ -39,7 +39,7 @@ public class LoginWidget extends VlabWidget {
 
 	private final AuthServiceAsync authService = GWT.create(AuthService.class);
 
-	private TextBox usernameField;
+	public TextBox usernameField;
 
 	private PasswordTextBox passwordTextBox;
 
@@ -112,14 +112,11 @@ public class LoginWidget extends VlabWidget {
 			}
 		});
 
-		
-		
 		// Add a handler to send the name to the server
 		ClickAndKeyHandler handler = new ClickAndKeyHandler();
 		usernameField.addKeyUpHandler(handler);
 		passwordTextBox.addKeyUpHandler(handler);
 		loginButton.addClickHandler(handler);
-	    
 	    
 		super.buildPanel(panel);
 	}
