@@ -1,30 +1,16 @@
-/*******************************************************************************
- * Copyright 2011 Google Inc. All Rights Reserved.
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
 package edu.asu.snac.server.auth;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import edu.asu.snac.client.remote.auth.AuthService;
+import edu.asu.snac.server.BaseRemoteServiceServlet;
+import edu.asu.snac.shared.web.AuthRequest;
+import edu.asu.snac.shared.web.WebResponse;
 
-import edu.asu.snac.client.auth.AuthRequest;
-import edu.asu.snac.client.auth.AuthResponse;
-import edu.asu.snac.client.auth.AuthService;
-
-public class AuthServiceImpl extends RemoteServiceServlet implements
-		AuthService {
+public class AuthServiceImpl extends
+		BaseRemoteServiceServlet<AuthRequest, String> implements AuthService {
+	private static final long serialVersionUID = 5996691942880246779L;
 
 	@Override
-	public AuthResponse doAuth(AuthRequest request) {
+	public WebResponse<String> onHandleRequest(AuthRequest request) {
 		String login = request.getLogin();
 		String pw = request.getPw();
 
@@ -32,9 +18,10 @@ public class AuthServiceImpl extends RemoteServiceServlet implements
 		UserInfo userInfo = getUserInfo(uid);
 
 		if (userInfo == null) {
-			return AuthResponse.ofFailed().setInfo("wrong");
+			return WebResponse.<String> ofFailed().setInfo("wrong");
 		} else {
-			return AuthResponse.ofSucceeded().setInfo(userInfo.getUid());
+			return WebResponse.<String> ofSucceeded()
+					.setInfo(userInfo.getUid());
 		}
 	}
 

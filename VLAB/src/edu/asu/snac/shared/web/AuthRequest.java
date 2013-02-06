@@ -1,4 +1,4 @@
-package edu.asu.snac.client.auth;
+package edu.asu.snac.shared.web;
 
 import java.io.Serializable;
 
