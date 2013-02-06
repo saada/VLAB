@@ -2,6 +2,7 @@ package edu.asu.snac.client.api;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class ApiResponse implements Serializable {
 	public final static int RESULT_FAILED = 0;
 	public final static int RESULT_SUCCEEDED = 1;

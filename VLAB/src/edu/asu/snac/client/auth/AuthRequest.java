@@ -2,6 +2,7 @@ package edu.asu.snac.client.auth;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class AuthRequest implements Serializable {
 	private String login;
 	private String pw;

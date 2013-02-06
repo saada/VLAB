@@ -20,6 +20,7 @@ import edu.asu.snac.client.auth.AuthRequest;
 import edu.asu.snac.client.auth.AuthResponse;
 import edu.asu.snac.client.auth.AuthService;
 
+@SuppressWarnings("serial")
 public class AuthServiceImpl extends RemoteServiceServlet implements
 		AuthService {
 

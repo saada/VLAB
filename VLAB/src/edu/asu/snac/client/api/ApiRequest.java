@@ -2,6 +2,7 @@ package edu.asu.snac.client.api;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class ApiRequest implements Serializable {
 	private String login;
 	private String pw;

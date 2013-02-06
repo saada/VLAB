@@ -2,7 +2,6 @@ package edu.asu.snac.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 
 import edu.asu.snac.client.widget.LoginWidget;
