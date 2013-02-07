@@ -21,11 +21,14 @@ public abstract class BaseRemoteServiceServlet<T, K> extends
 	}
 
 	protected SessionState getSessionState() {
-		HttpServletRequest request = this.getThreadLocalRequest();
-		HttpSession session = request.getSession();
-		SessionState state = (SessionState) session.getAttribute(SessionState
-				.getName());
+		SessionState state = (SessionState) getSession().getAttribute(
+				SessionState.getName());
 		return state;
+	}
+
+	protected HttpSession getSession() {
+		HttpServletRequest request = this.getThreadLocalRequest();
+		return request.getSession();
 	}
 
 	public abstract WebResponse<K> onHandleRequest(T request);
