@@ -18,14 +18,14 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-import edu.asu.snac.client.auth.AuthRequest;
-import edu.asu.snac.client.auth.AuthResponse;
-import edu.asu.snac.client.auth.AuthService;
-import edu.asu.snac.client.auth.AuthServiceAsync;
+import edu.asu.snac.client.remote.auth.AuthService;
+import edu.asu.snac.client.remote.auth.AuthServiceAsync;
+import edu.asu.snac.shared.web.AuthRequest;
+import edu.asu.snac.shared.web.WebResponse;
 
 public class LoginWidget extends VlabWidget {
-	
-    /**
+
+	/**
 	 * The message displayed to the user when the server cannot be reached or
 	 * returns an error.
 	 */
@@ -46,7 +46,7 @@ public class LoginWidget extends VlabWidget {
 	private HTML serverResponseLabel;
 
 	private Button closeButton;
-    
+
 	public LoginWidget() {
 		AbsolutePanel panel = new AbsolutePanel();
 		panel.getElement().getStyle().setOverflow(Overflow.VISIBLE);
@@ -54,15 +54,15 @@ public class LoginWidget extends VlabWidget {
 
 		// We can add style names to widgets
 		loginButton.addStyleName("sendButton");
-	    		
+
 		Label lblEmail = new Label("Email");
 		panel.add(lblEmail, 73, 134);
 		usernameField = new TextBox();
 		usernameField.setAlignment(TextAlignment.LEFT);
-		
+
 		panel.add(usernameField, 120, 132);
 		usernameField.setSize("142px", "14px");
-		
+
 		// Focus the cursor on the name field when the app loads
 		usernameField.getElement().focus();
 		usernameField.selectAll();
@@ -84,7 +84,7 @@ public class LoginWidget extends VlabWidget {
 		dialogBox.setText("Remote Procedure Call");
 		dialogBox.setAnimationEnabled(true);
 		closeButton = new Button("Close");
-		
+
 		// We can set the id of a widget by accessing its Element
 		closeButton.getElement().setId("closeButton");
 		final Label textToServerLabel = new Label();
@@ -113,13 +113,12 @@ public class LoginWidget extends VlabWidget {
 		usernameField.addKeyUpHandler(handler);
 		passwordTextBox.addKeyUpHandler(handler);
 		loginButton.addClickHandler(handler);
-	    
+
 		super.buildPanel(panel);
 	}
-	
+
 	/**
-	 * Send the name from the nameField to the server and wait for a
-	 * response.
+	 * Send the name from the nameField to the server and wait for a response.
 	 */
 	private void login() {
 		// First, we validate the input.
@@ -131,13 +130,12 @@ public class LoginWidget extends VlabWidget {
 		AuthRequest authRequest = new AuthRequest();
 		authRequest.setLogin(login);
 		authRequest.setPW(pw);
-		authService.doAuth(authRequest,
-				new AsyncCallback<AuthResponse>() {
+		authService.onHandleRequest(authRequest,
+				new AsyncCallback<WebResponse<String>>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						dialogBox
-								.setText("Remote Procedure Call - Failure");
+						dialogBox.setText("Remote Procedure Call - Failure");
 						serverResponseLabel
 								.addStyleName("serverResponseLabelError");
 						serverResponseLabel.setHTML(SERVER_ERROR);
@@ -146,22 +144,19 @@ public class LoginWidget extends VlabWidget {
 					}
 
 					@Override
-					public void onSuccess(AuthResponse result) {
+					public void onSuccess(WebResponse<String> result) {
 						String uid = result.getInfo();
-						dialogBox.setText("You are logged in sucker:"
-								+ uid);
+						dialogBox.setText("You are logged in sucker:" + uid);
 						serverResponseLabel
 								.addStyleName("serverResponseLabelError");
-						serverResponseLabel
-								.setHTML("You are logged in sucker:"
-										+ uid);
+						serverResponseLabel.setHTML("You are logged in sucker:"
+								+ uid);
 						dialogBox.center();
 						closeButton.setFocus(true);
 					}
-
 				});
 	}
-	
+
 	// Create a handler for the sendButton and nameField
 	class ClickAndKeyHandler implements ClickHandler, KeyUpHandler {
 		/**
@@ -180,7 +175,6 @@ public class LoginWidget extends VlabWidget {
 			}
 		}
 
-		
 	}
-	
+
 }

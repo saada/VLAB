@@ -1,9 +1,9 @@
-package edu.asu.snac.client.api;
+package edu.asu.snac.shared.web;
 
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
-public class ApiRequest implements Serializable {
+public class AuthRequest implements Serializable {
 	private String login;
 	private String pw;
 
