@@ -3,7 +3,7 @@ package edu.asu.snac.client.widget;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Panel;
 
-public class VlabWidget extends Composite {
+public class BaseWidget extends Composite {
 
 	@Override
 	protected void onAttach() {
@@ -25,20 +25,29 @@ public class VlabWidget extends Composite {
 		super.onUnload();
 	}
 
-	public VlabWidget() {
+	public BaseWidget() {
 	}
 
-	// Constructor that takes a panel have all the GWT widgets (buttons, labels,
-	// etc...)
+	/**
+	 * Constructor that takes a panel have all the GWT widgets (buttons, labels,
+	 * etc...)
+	 */
 	public void buildPanel(Panel panel) {
-		initWidget(panel); // initWidget is a Composite function that creates
-							// this instance's Widget properties
+		/*
+		 * initWidget is a Composite function that creates this instance's
+		 * Widget properties
+		 */
+		initWidget(panel);
 	}
 
 	public void buildPanel(Panel panel, String style) {
-		initWidget(panel); // initWidget is a Composite function that creates
-							// this instance's Widget properties
-		setStyleName(style); // Any name for the style of this panel
+		/*
+		 * initWidget is a Composite function that creates this instance's
+		 * Widget properties
+		 */
+		initWidget(panel);
+		// Any name for the style of this panel
+		setStyleName(style);
 	}
 
 }

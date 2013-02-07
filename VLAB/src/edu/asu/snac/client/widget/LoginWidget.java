@@ -23,7 +23,7 @@ import edu.asu.snac.client.remote.auth.AuthServiceAsync;
 import edu.asu.snac.shared.web.AuthRequest;
 import edu.asu.snac.shared.web.WebResponse;
 
-public class LoginWidget extends VlabWidget {
+public class LoginWidget extends BaseWidget {
 
 	/**
 	 * The message displayed to the user when the server cannot be reached or
@@ -176,5 +176,4 @@ public class LoginWidget extends VlabWidget {
 		}
 
 	}
-
 }
