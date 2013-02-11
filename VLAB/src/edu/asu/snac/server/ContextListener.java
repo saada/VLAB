@@ -4,6 +4,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import edu.asu.snac.server.chat.ChatRoomMap;
+
 public class ContextListener implements ServletContextListener {
 
 	@Override
@@ -15,7 +17,7 @@ public class ContextListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
 		ServletContext context = event.getServletContext();
-
+		context.setAttribute(ChatRoomMap.getName(), new ChatRoomMap());
 	}
 
 }
