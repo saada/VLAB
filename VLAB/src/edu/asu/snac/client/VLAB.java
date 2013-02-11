@@ -4,6 +4,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.ui.RootPanel;
 
+import edu.asu.snac.client.widget.ChatWidget;
 import edu.asu.snac.client.widget.LoginWidget;
 
 /**
@@ -17,14 +18,9 @@ public class VLAB implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		login = new LoginWidget();
-
 		// Use RootPanel.get() to get the entire body element
 		RootPanel rootPanel = RootPanel.get("pageContainer");
-		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand () {
-	        public void execute () {
-	            login.usernameField.setFocus(true);
-	        }
-	    });
 	    rootPanel.add(login);
+	    
 	}
 }
