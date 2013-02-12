@@ -1,6 +1,7 @@
 package edu.asu.snac.client.widget;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -35,7 +36,7 @@ public class LoginWidget extends BaseWidget {
 
 	private final AuthServiceAsync authService = GWT.create(AuthService.class);
 
-	public TextBox usernameField;
+	private TextBox usernameField;
 
 	private PasswordTextBox passwordTextBox;
 
@@ -46,12 +47,21 @@ public class LoginWidget extends BaseWidget {
 	private HTML serverResponseLabel;
 
 	private Button closeButton;
-
+	private AbsolutePanel panel;
+	protected void onAttach(){
+		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand () {
+	        public void execute () {
+	            usernameField.setFocus(true);
+	        }
+	    });
+		super.onAttach();
+	}
+	
 	public LoginWidget() {
-		AbsolutePanel panel = new AbsolutePanel();
+		panel = new AbsolutePanel();
 		panel.getElement().getStyle().setOverflow(Overflow.VISIBLE);
 		loginButton = new Button("login");
-
+		
 		// We can add style names to widgets
 		loginButton.addStyleName("sendButton");
 
@@ -153,6 +163,11 @@ public class LoginWidget extends BaseWidget {
 								+ uid);
 						dialogBox.center();
 						closeButton.setFocus(true);
+						if(uid.equals("54321"))
+						{
+							panel.clear();
+							panel.add(new ChatWidget());
+						}
 					}
 				});
 	}
