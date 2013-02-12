@@ -35,6 +35,7 @@ public class ChatWidget extends BaseWidget {
 		absolutePanel.add(chatArea, 0, 0);
 		chatArea.setSize("727px", "329px");
 		chatArea.setReadOnly(true);
+		chatArea.getElement().getStyle().setProperty("resize","none");
 		
 		messageBox = new TextBox();
 		
