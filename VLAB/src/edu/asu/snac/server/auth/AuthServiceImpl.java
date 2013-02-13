@@ -8,7 +8,7 @@ import edu.asu.snac.shared.web.WebResponse;
 public class AuthServiceImpl extends
 		BaseRemoteServiceServlet<AuthRequest, String> implements AuthService {
 	private static final long serialVersionUID = 5996691942880246779L;
-
+	
 	@Override
 	public WebResponse<String> onHandleRequest(AuthRequest request) {
 		String login = request.getLogin();
