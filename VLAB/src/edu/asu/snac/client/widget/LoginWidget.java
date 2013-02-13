@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
@@ -165,8 +166,7 @@ public class LoginWidget extends BaseWidget {
 						closeButton.setFocus(true);
 						if(uid.equals("54321"))
 						{
-							panel.clear();
-							panel.add(new ChatWidget());
+							History.newItem("chat");
 						}
 					}
 				});
